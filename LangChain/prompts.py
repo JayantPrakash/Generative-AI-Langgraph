@@ -53,7 +53,6 @@ Summarize this text in one sentence:
 
 {text}
 """
-llm = GoogleGenerativeAI(model="gemini-1.5-pro")
 
 prompt = PromptTemplate.from_template(template)
 
