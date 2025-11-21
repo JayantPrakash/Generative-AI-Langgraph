@@ -95,3 +95,28 @@ chat_prompt_template = ChatPromptTemplate.from_messages(
      ("human", prompt_template)])
 
 print(chat_prompt_template.invoke("fake"))
+
+print(len(chat_prompt_template.invoke({"job_description": "fake", "history": [("human", "hi!"), ("ai", "hi!")]}).messages)
+)
+
+# chaining prompts
+
+system_template_part1 = PromptTemplate.from_template("a: {a}")
+system_template_part2 = PromptTemplate.from_template("b: {b}")
+system_template = system_template_part1 + " " + system_template_part2
+print(system_template.invoke({"a": "a", "b": "b"}))
+print(system_template.invoke({"a": "a", "b": "b"}).text)
+
+system_prompt_template = PromptTemplate.from_template("a: {a} b: {b}")
+#system_prompt_template = (
+#    "Given a job description, decide whether it suites a junior Java developer."
+#    "\nJOB DESCRIPTION:\n{job_description}\n"
+#)
+chat_prompt_template = ChatPromptTemplate.from_messages(
+    [("system", system_prompt_template),
+     ("human", "hi"),
+     ("ai", "{c}")])
+
+messages = chat_prompt_template.invoke({"job_description": "a", "b": "b", "c": "c"}).messages
+print(len(messages))
+print(messages[0].content)
